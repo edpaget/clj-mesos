@@ -111,7 +111,7 @@
                 (let [name (clojurify-name (.getName field))
                       value (get m (keyword name) ::missing)
                       message? (= (.getType field) com.google.protobuf.Descriptors$FieldDescriptor$Type/MESSAGE)
-                      enum? (= (.getType field) com.google.protobuf.Descriptors$FieldDescriptor$Type/ENUM)
+                      enum? (and (not (= value ::missing)) (= (.getType field) com.google.protobuf.Descriptors$FieldDescriptor$Type/ENUM))
                       ;; Fix ups for simplicity
                       value (cond
                               ;; Fix up Resources and Attributes
@@ -138,6 +138,8 @@
                                     "mesos.Value.Type" org.apache.mesos.Protos$Value$Type
                                     "mesos.TaskState" org.apache.mesos.Protos$TaskState
                                     "mesos.Status" org.apache.mesos.Protos$Status
+                                    "mesos.TaskStatus.Source" org.apache.mesos.Protos$TaskStatus$Source
+                                    "mesos.TaskStatus.Reason" org.apache.mesos.Protos$TaskStatus$Reason
                                     "mesos.Volume.Mode" org.apache.mesos.Protos$Volume$Mode
                                     "mesos.ContainerInfo.Type" org.apache.mesos.Protos$ContainerInfo$Type)
                                   (javaify-enum-name value)))
